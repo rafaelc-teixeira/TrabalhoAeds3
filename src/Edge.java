@@ -1,4 +1,6 @@
-public class Edge implements Comparable<Edge> {
+import java.util.Comparator;
+
+public class Edge implements Comparable<Edge>, Comparator<Edge> {
 
     private int source;
     private int sink;
@@ -8,6 +10,9 @@ public class Edge implements Comparable<Edge> {
         this.source = source;
         this.sink = sink;
         this.weight = weight;
+    }
+
+    public Edge() {
     }
 
     public int getSource() {
@@ -46,4 +51,14 @@ public class Edge implements Comparable<Edge> {
         return -1;
     }
 
+    @Override
+    public int compare(Edge o1, Edge o2) {
+        if (o1.weight < o2.weight)
+            return -1;
+
+        if (o1.weight > o2.weight)
+            return 1;
+
+        return 0;
+    }
 }
