@@ -247,7 +247,7 @@ public class GraphMatrix {
             }
         }
         // Recovering paths
-        System.out.printf("Distance from %d to %d is: %d", s, t, dist[s][t]);
+        System.out.printf("Distance from %d to %d is: %d\n", s, t, dist[s][t]);
         ArrayList<Integer> C = new ArrayList<Integer>();
         C.add(t);
         int aux = t;

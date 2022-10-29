@@ -114,6 +114,76 @@ class App {
         System.out.println("Tempo: " + Duration.between(stopTime, startTime).toString());
     }
 
+    public static void execBellmanFord(String nomeArquivo) throws IOException {
+        GraphList g = new GraphList("files/cm/" + nomeArquivo);
+        int[] origemDestino = menuNosOrigemEDestino();
+
+        System.out.println("Arquivo: <" + nomeArquivo + ">");
+        System.out.println("Origem: <" + origemDestino[0] + ">");
+        System.out.println("Destino: <" + origemDestino[1] + ">");
+        System.out.println("Processando...");
+
+        Instant startTime = Instant.now();
+
+        int[] dist = g.bellmanFord(g.getEdgeList(),g.getCountNodes(), origemDestino[0]);
+
+
+        String caminho = calculaCaminho(origemDestino[0], origemDestino[1], g.getPred());
+
+        Instant stopTime = Instant.now();
+
+        System.out.println("Caminho: " + caminho);
+        System.out.println("Custo: " + dist[origemDestino[1]]);
+        System.out.println("Tempo: " + Duration.between(stopTime, startTime).toString());
+    }
+
+    public static void execBellmanFordMelhorado(String nomeArquivo) throws IOException {
+        GraphList g = new GraphList("files/cm/" + nomeArquivo);
+        int[] origemDestino = menuNosOrigemEDestino();
+
+        System.out.println("Arquivo: <" + nomeArquivo + ">");
+        System.out.println("Origem: <" + origemDestino[0] + ">");
+        System.out.println("Destino: <" + origemDestino[1] + ">");
+        System.out.println("Processando...");
+
+        Instant startTime = Instant.now();
+
+        int[] dist = g.betterBellmanFord(g.getEdgeList(),g.getCountNodes(), origemDestino[0]);
+
+
+        String caminho = calculaCaminho(origemDestino[0], origemDestino[1], g.getPred());
+
+        Instant stopTime = Instant.now();
+
+        System.out.println("Caminho: " + caminho);
+        System.out.println("Custo: " + dist[origemDestino[1]]);
+        System.out.println("Tempo: " + Duration.between(stopTime, startTime).toString());
+    }
+
+    public static void execFloydWarshall(String nomeArquivo) throws IOException {
+        GraphMatrix g = new GraphMatrix("files/cm/" + nomeArquivo);
+        int[] origemDestino = menuNosOrigemEDestino();
+
+        System.out.println("Arquivo: <" + nomeArquivo + ">");
+        System.out.println("Origem: <" + origemDestino[0] + ">");
+        System.out.println("Destino: <" + origemDestino[1] + ">");
+        System.out.println("Processando...");
+
+        Instant startTime = Instant.now();
+        g.floydWarshall(origemDestino[0], origemDestino[1]);
+//        int[] dist = g.betterBellmanFord(g.getEdgeList(),g.getCountNodes(), origemDestino[0]);
+
+
+//        String caminho = calculaCaminho(origemDestino[0], origemDestino[1], g.getPred());
+
+        Instant stopTime = Instant.now();
+
+//        System.out.println("Caminho: " + caminho);
+//        System.out.println("Custo: " + dist[origemDestino[1]]);
+        System.out.println("Tempo: " + Duration.between(stopTime, startTime).toString());
+    }
+
+
     private static void execCaminhoMinimo() throws IOException {
         int op = menuCaminhoMinimo();
         String nomeArquivo = getNomeArquivo(op);
@@ -121,9 +191,9 @@ class App {
 
         switch (algoritmo) {
             case 1 -> execDijkstra(nomeArquivo);
-            //case 2 -> execBellmanFord();
-            //case 3 -> execBellmanFordMelhorado();
-            //case 4 -> execFloydWarshall();
+            case 2 -> execBellmanFord(nomeArquivo);
+            case 3 -> execBellmanFordMelhorado(nomeArquivo);
+            case 4 -> execFloydWarshall(nomeArquivo);
         }
 
     }

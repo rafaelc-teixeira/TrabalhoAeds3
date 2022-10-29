@@ -3,11 +3,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GraphList {
 
     private int countNodes;
     private int countEdges;
+    private int pred[];
     private ArrayList<ArrayList<Edge>> adjList;
     private ArrayList<Edge> edgeList;
     private static final int INF = 999999;
@@ -36,6 +39,9 @@ public class GraphList {
         for (int i = 0; i < this.countNodes; ++i) {
             adjList.add(new ArrayList<Edge>());
         }
+
+        this.pred = new int[this.countNodes];
+
         edgeList = new ArrayList<>();
         // Adds one edge at time
         for (int i = 0; i < fileLines; ++i) {
@@ -295,10 +301,77 @@ public class GraphList {
         }
         return str;
     }
+    public int[] bellmanFord(ArrayList<Edge> graph, int V, int start) {
+
+        // Initialize the distance to all nodes to be infinity
+        // except for the start node which is zero.
+        int[] dist = new int[V];
+        Arrays.fill(dist, INF);
+        dist[start] = 0;
+
+        // For each vertex, apply relaxation for all the edges
+        for (int i = 0; i < V - 1; i++)
+            for (Edge edge : graph)
+                if (dist[edge.getSource()] + edge.getWeight() < dist[edge.getSink()]){
+                    dist[edge.getSink()] = dist[edge.getSource()] + edge.getWeight();
+                    pred[edge.getSink()] = edge.getSource();
+                }
+
+
+        // Run algorithm a second time to detect which nodes are part
+        // of a negative cycle. A negative cycle has occurred if we
+        // can find a better path beyond the optimal solution.
+        for (int i = 0; i < V - 1; i++)
+            for (Edge edge : graph)
+                if (dist[edge.getSource()] + edge.getWeight() < dist[edge.getSink()])
+                    dist[edge.getSink()] = INF;
+
+        // Return the array containing the shortest distance to every node
+        return dist;
+    }
+
+    public int[] betterBellmanFord(ArrayList<Edge> graph, int V, int start) {
+
+        // Initialize the distance to all nodes to be infinity
+        // except for the start node which is zero.
+        int[] dist = new int[V];
+        Arrays.fill(dist, INF);
+        dist[start] = 0;
+
+        // For each vertex, apply relaxation for all the edges
+        for (int i = 0; i < V - 1; i++) {
+            boolean trocou = false;
+            for (Edge edge : graph){
+                if (dist[edge.getSource()] + edge.getWeight() < dist[edge.getSink()]) {
+                    dist[edge.getSink()] = dist[edge.getSource()] + edge.getWeight();
+                    pred[edge.getSink()] = edge.getSource();
+                    trocou = true;
+                }
+            }
+            if (!trocou) {
+                break;
+            }
+        }
 
 
 
+        // Run algorithm a second time to detect which nodes are part
+        // of a negative cycle. A negative cycle has occurred if we
+        // can find a better path beyond the optimal solution.
+        for (int i = 0; i < V - 1; i++)
+            for (Edge edge : graph)
+                if (dist[edge.getSource()] + edge.getWeight() < dist[edge.getSink()])
+                    dist[edge.getSink()] = INF;
 
+        // Return the array containing the shortest distance to every node
+        return dist;
+    }
 
+    public ArrayList<Edge> getEdgeList() {
+        return edgeList;
+    }
 
+    public int[] getPred() {
+        return pred;
+    }
 }
