@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class GraphList {
 
@@ -141,21 +140,6 @@ public class GraphList {
             }
         }
         return true;
-    }
-
-    public ArrayList<Integer> bfs(int s) {
-        // TDOO tarefa da parte 1
-        return new ArrayList<>();
-    }
-
-    public ArrayList<Integer> dfs(int s) {
-        // TDOO tarefa da parte 1
-        return new ArrayList<>();
-    }
-
-    public boolean connected() {
-        // TDOO tarefa da parte 1
-        return false;
     }
 
     public boolean isOriented() {
